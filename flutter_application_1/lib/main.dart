@@ -16,14 +16,15 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Flutter Demo',
       debugShowCheckedModeBanner: false,
-      color: Colors.transparent,
-      theme: ThemeData().copyWith(
-          appBarTheme: const AppBarTheme(
-        centerTitle: true,
-        backgroundColor: Colors.transparent,
-        iconTheme: IconThemeData(color: Colors.black),
-        elevation: 0,
-      )),
+      darkTheme: ThemeData.dark(),
+      theme: ThemeData(
+        brightness: Brightness.dark,
+        primarySwatch: Colors.blue,
+        appBarTheme: const AppBarTheme(
+          backgroundColor: Colors.transparent,
+          elevation: 0,
+        ),
+      ),
       home: const SplashScreen(),
     );
   }
