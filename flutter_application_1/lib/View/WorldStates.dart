@@ -50,7 +50,7 @@ class _WorldStatesScreenState extends State<WorldStatesScreen>
                   return Expanded(
                       flex: 1,
                       child: SpinKitFadingCircle(
-                        color: Colors.black,
+                        color: Colors.white,
                         size: 50,
                         controller: _controller,
                       ));
