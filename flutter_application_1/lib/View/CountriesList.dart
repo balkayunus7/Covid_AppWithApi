@@ -43,30 +43,11 @@ class _CountriesListScreenState extends State<CountriesListScreen> {
                   return ListView.builder(
                     itemCount: 10,
                     itemBuilder: (context, index) {
-                      return Shimmer.fromColors(
-                        baseColor: Colors.grey.shade700,
-                        highlightColor: Colors.grey.shade100,
-                        child: Column(
-                          children: [
-                            ListTile(
-                              title: Container(
-                                height: 10,
-                                width: 89,
-                                color: Colors.white,
-                              ),
-                              subtitle: Container(
-                                height: 10,
-                                width: 89,
-                                color: Colors.white,
-                              ),
-                              leading: Container(
-                                height: 50,
-                                width: 89,
-                                color: Colors.white,
-                              ),
-                            )
-                          ],
-                        ),
+                      return const ShimmerWidget(
+                        contColor: Colors.white,
+                        contJeight: 10,
+                        contWidth: 89,
+                        leadHeight: 50,
                       );
                     },
                   );
@@ -178,6 +159,50 @@ class _CountriesListScreenState extends State<CountriesListScreen> {
             ))
           ],
         ),
+      ),
+    );
+  }
+}
+
+// Shimmer
+class ShimmerWidget extends StatelessWidget {
+  const ShimmerWidget({
+    super.key,
+    required this.leadHeight,
+    required this.contJeight,
+    required this.contWidth,
+    required this.contColor,
+  });
+
+  final double leadHeight;
+  final double contJeight;
+  final double contWidth;
+  final Color contColor;
+  @override
+  Widget build(BuildContext context) {
+    return Shimmer.fromColors(
+      baseColor: Colors.grey.shade700,
+      highlightColor: Colors.grey.shade100,
+      child: Column(
+        children: [
+          ListTile(
+            title: Container(
+              height: contJeight,
+              width: contWidth,
+              color: contColor,
+            ),
+            subtitle: Container(
+              height: contJeight,
+              width: contWidth,
+              color: contColor,
+            ),
+            leading: Container(
+              height: leadHeight,
+              width: contWidth,
+              color: contColor,
+            ),
+          )
+        ],
       ),
     );
   }
