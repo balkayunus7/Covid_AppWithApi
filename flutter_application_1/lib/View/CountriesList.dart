@@ -11,47 +11,49 @@ class CountriesListScreen extends StatefulWidget {
   State<CountriesListScreen> createState() => _CountriesListScreenState();
 }
 
-class _CountriesListScreenState extends State<CountriesListScreen> {
+class _CountriesListScreenState extends State<CountriesListScreen>
+    with TickerProviderStateMixin {
   TextEditingController searchController = TextEditingController();
   @override
   Widget build(BuildContext context) {
     StateServices stateServices = StateServices();
+    _Utilities utilities = _Utilities();
+
     return Scaffold(
       appBar: AppBar(),
       body: SafeArea(
         child: Column(
           children: [
             Padding(
-              padding: const EdgeInsets.all(10.0),
+              padding: utilities.allPad,
               child: TextFormField(
-                onChanged: (value) {
-                  setState(() {});
-                },
+                onChanged: (value) => setState(() {}),
                 controller: searchController,
-                decoration: InputDecoration(
-                    hintText: " Search with country name",
-                    contentPadding: const EdgeInsets.symmetric(horizontal: 20),
-                    border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(50))),
+                decoration: textFormDec(
+                    hintText: utilities.hintText,
+                    symetricPad: utilities.symetricPad),
               ),
             ),
             Expanded(
                 child: FutureBuilder(
               future: stateServices.countriesListApi(),
               builder: (context, AsyncSnapshot<List<dynamic>> snapshot) {
+                // if data is empty get shimmer
                 if (!snapshot.hasData) {
                   return ListView.builder(
                     itemCount: 10,
                     itemBuilder: (context, index) {
-                      return const ShimmerWidget(
-                        contColor: Colors.white,
-                        contJeight: 10,
-                        contWidth: 89,
-                        leadHeight: 50,
+                      return ShimmerWidget(
+                        contColor: utilities.shimmerCol,
+                        contJeight: utilities.contJeight,
+                        contWidth: utilities.contWidth,
+                        leadHeight: utilities.leadHeight,
                       );
                     },
                   );
-                } else {
+                }
+                // if data is not empty get service requests
+                else {
                   return ListView.builder(
                     itemCount: snapshot.data!.length,
                     itemBuilder: (context, index) {
@@ -61,45 +63,13 @@ class _CountriesListScreenState extends State<CountriesListScreen> {
                         return Column(
                           children: [
                             InkWell(
-                              onTap: () {
-                                Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) => DetailsScreen(
-                                              contitent: snapshot.data![index]
-                                                  ["continent"],
-                                              name: snapshot.data![index]
-                                                  ["country"],
-                                              image: snapshot.data![index]
-                                                  ["countryInfo"]["flag"],
-                                              active: snapshot.data![index]
-                                                  ["active"],
-                                              critical: snapshot.data![index]
-                                                  ["critical"],
-                                              test: snapshot.data![index]
-                                                  ["tests"],
-                                              todayRecovered:
-                                                  snapshot.data![index]
-                                                      ["todayRecovered"],
-                                              totalCases: snapshot.data![index]
-                                                  ["cases"],
-                                              totalDeaths: snapshot.data![index]
-                                                  ["deaths"],
-                                              totalRecovered: snapshot
-                                                  .data![index]["recovered"],
-                                            )));
-                              },
-                              child: ListTile(
-                                title: Text(snapshot.data![index]["country"]),
-                                subtitle: Text(
-                                    snapshot.data![index]["cases"].toString()),
-                                leading: Image(
-                                    height: 50,
-                                    width: 50,
-                                    image: NetworkImage(snapshot.data![index]
-                                        ["countryInfo"]["flag"])),
-                              ),
-                            ),
+                                onTap: () {
+                                  var materialPageRoute = MaterialPageRoute(
+                                      builder: (context) =>
+                                          detaRoutService(snapshot, index));
+                                  Navigator.push(context, materialPageRoute);
+                                },
+                                child: baseListtile(snapshot, index)),
                           ],
                         );
                       } else if (name
@@ -109,44 +79,12 @@ class _CountriesListScreenState extends State<CountriesListScreen> {
                           children: [
                             InkWell(
                                 onTap: () {
-                                  Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (context) => DetailsScreen(
-                                                contitent: snapshot.data![index]
-                                                    ["continent"],
-                                                name: snapshot.data![index]
-                                                    ["country"],
-                                                image: snapshot.data![index]
-                                                    ["countryInfo"]["flag"],
-                                                active: snapshot.data![index]
-                                                    ["active"],
-                                                critical: snapshot.data![index]
-                                                    ["critical"],
-                                                test: snapshot.data![index]
-                                                    ["tests"],
-                                                todayRecovered:
-                                                    snapshot.data![index]
-                                                        ["todayRecovered"],
-                                                totalCases: snapshot
-                                                    .data![index]["cases"],
-                                                totalDeaths: snapshot
-                                                    .data![index]["deaths"],
-                                                totalRecovered: snapshot
-                                                    .data![index]["recovered"],
-                                              )));
+                                  var materialPageRoute = MaterialPageRoute(
+                                      builder: (context) =>
+                                          detaRoutService(snapshot, index));
+                                  Navigator.push(context, materialPageRoute);
                                 },
-                                child: ListTile(
-                                  title: Text(snapshot.data![index]["country"]),
-                                  subtitle: Text(snapshot.data![index]["cases"]
-                                      .toString()),
-                                  leading: Image(
-                                    height: 50,
-                                    width: 50,
-                                    image: NetworkImage(snapshot.data![index]
-                                        ["countryInfo"]["flag"]),
-                                  ),
-                                )),
+                                child: baseListtile(snapshot, index)),
                           ],
                         );
                       } else {
@@ -160,6 +98,46 @@ class _CountriesListScreenState extends State<CountriesListScreen> {
           ],
         ),
       ),
+    );
+  }
+
+  // textFormInput decoration
+  InputDecoration textFormDec(
+      {required final String? hintText,
+      required final EdgeInsets symetricPad}) {
+    return InputDecoration(
+        hintText: hintText,
+        contentPadding: symetricPad,
+        border: OutlineInputBorder(borderRadius: BorderRadius.circular(50)));
+  }
+
+  // get base ListTile for each Country
+  ListTile baseListtile(AsyncSnapshot<List<dynamic>> snapshot, int index) {
+    return ListTile(
+      title: Text(snapshot.data![index]["country"]),
+      subtitle: Text(snapshot.data![index]["cases"].toString()),
+      leading: Image(
+        height: 50,
+        width: 50,
+        image: NetworkImage(snapshot.data![index]["countryInfo"]["flag"]),
+      ),
+    );
+  }
+
+  // Material PageRouter
+  DetailsScreen detaRoutService(
+      AsyncSnapshot<List<dynamic>> snapshot, int index) {
+    return DetailsScreen(
+      contitent: snapshot.data![index]["continent"],
+      name: snapshot.data![index]["country"],
+      image: snapshot.data![index]["countryInfo"]["flag"],
+      active: snapshot.data![index]["active"],
+      critical: snapshot.data![index]["critical"],
+      test: snapshot.data![index]["tests"],
+      todayRecovered: snapshot.data![index]["todayRecovered"],
+      totalCases: snapshot.data![index]["cases"],
+      totalDeaths: snapshot.data![index]["deaths"],
+      totalRecovered: snapshot.data![index]["recovered"],
     );
   }
 }
@@ -206,4 +184,14 @@ class ShimmerWidget extends StatelessWidget {
       ),
     );
   }
+}
+
+class _Utilities {
+  final String hintText = "Search a Country";
+  final EdgeInsets symetricPad = const EdgeInsets.symmetric(horizontal: 20);
+  final EdgeInsets allPad = const EdgeInsets.all(10.0);
+  final Color shimmerCol = Colors.white;
+  final double contJeight = 10;
+  final double contWidth = 89;
+  final double leadHeight = 50;
 }

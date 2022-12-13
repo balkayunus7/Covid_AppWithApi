@@ -31,28 +31,26 @@ class _SplashScreenState extends State<SplashScreen>
 
   @override
   Widget build(BuildContext context) {
+    _Utilities utilities = _Utilities();
     return Scaffold(
       body: SafeArea(
         child: Column(
           children: [
+            sizedBox(context),
             SizedBox(
-              height: MediaQuery.of(context).size.height * .08,
-            ),
-            SizedBox(
-              height: 300,
-              width: 300,
+              height: utilities.contDimension,
+              width: utilities.contDimension,
               child: Center(
-                child: Lottie.asset("images/26140-covid19.json"),
+                child: Lottie.asset(utilities.lottieUrl),
               ),
             ),
-            SizedBox(
-              height: MediaQuery.of(context).size.height * .08,
-            ),
-            const Align(
+            sizedBox(context),
+            Align(
               alignment: Alignment.center,
               child: Text(
-                "Covid-19\nTracker App",
-                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 35),
+                utilities.titleText,
+                style:
+                    const TextStyle(fontWeight: FontWeight.bold, fontSize: 35),
               ),
             )
           ],
@@ -60,4 +58,16 @@ class _SplashScreenState extends State<SplashScreen>
       ),
     );
   }
+
+  SizedBox sizedBox(BuildContext context) {
+    return SizedBox(
+      height: MediaQuery.of(context).size.height * .08,
+    );
+  }
+}
+
+class _Utilities {
+  final String titleText = "Covid-19\nTracker App";
+  final String lottieUrl = "images/26140-covid19.json";
+  final double contDimension = 300;
 }
