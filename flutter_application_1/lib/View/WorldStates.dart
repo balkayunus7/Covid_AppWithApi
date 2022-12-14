@@ -34,6 +34,7 @@ class _WorldStatesScreenState extends State<WorldStatesScreen>
   @override
   Widget build(BuildContext context) {
     StateServices stateServices = StateServices();
+    _Utilities utilities = _Utilities();
     return Scaffold(
       appBar: AppBar(),
       body: SafeArea(
@@ -47,23 +48,25 @@ class _WorldStatesScreenState extends State<WorldStatesScreen>
               future: stateServices.fetchWorldStateRecords(),
               builder: (context, AsyncSnapshot<WorldStatesModel> snapshot) {
                 if (!snapshot.hasData) {
+                  // if data is empty show loading circle or spinkit
                   return Expanded(
                       flex: 1,
-                      child: SpinKitFadingCircle(
-                        color: Colors.white,
-                        size: 50,
+                      child: SpinkitWidget(
                         controller: _controller,
+                        colorSpin: Colors.white,
+                        spinSize: 50,
                       ));
                 } else {
                   return Column(
                     children: [
+                      // *Piechart added with animations
                       PieChart(
                         dataMap: {
-                          "Total":
+                          utilities.pieTot:
                               double.parse(snapshot.data!.cases!.toString()),
-                          "Recovered": double.parse(
+                          utilities.pieRec: double.parse(
                               snapshot.data!.recovered!.toString()),
-                          "Deaths":
+                          utilities.pieDeath:
                               double.parse(snapshot.data!.deaths!.toString()),
                         },
                         chartValuesOptions: const ChartValuesOptions(
@@ -79,35 +82,37 @@ class _WorldStatesScreenState extends State<WorldStatesScreen>
                         padding: EdgeInsets.symmetric(
                             vertical: MediaQuery.of(context).size.height * .06),
                         child: Card(
+                          // * Card for ReusableRows
                           child: Column(
                             children: [
                               ReusableRow(
-                                  title: "Total",
+                                  title: utilities.serviceCase,
                                   value: snapshot.data!.cases!.toString()),
                               ReusableRow(
-                                  title: "Deaths",
+                                  title: utilities.serviceTotDeath,
                                   value: snapshot.data!.deaths!.toString()),
                               ReusableRow(
-                                  title: "Recovered",
+                                  title: utilities.serviceTotRec,
                                   value: snapshot.data!.recovered!.toString()),
                               ReusableRow(
-                                  title: "Active",
+                                  title: utilities.serviceActive,
                                   value: snapshot.data!.active!.toString()),
                               ReusableRow(
-                                  title: "Critical",
+                                  title: utilities.serviceCrit,
                                   value: snapshot.data!.critical!.toString()),
                               ReusableRow(
-                                  title: "Today Deaths",
+                                  title: utilities.serviceTodDeath,
                                   value:
                                       snapshot.data!.todayDeaths!.toString()),
                               ReusableRow(
-                                  title: "Today Recovered",
+                                  title: utilities.serviceTodRec,
                                   value: snapshot.data!.todayRecovered!
                                       .toString()),
                             ],
                           ),
                         ),
                       ),
+                      // * added GestureDetector for PageRoueter
                       GestureDetector(
                         onTap: () {
                           Navigator.push(
@@ -118,14 +123,15 @@ class _WorldStatesScreenState extends State<WorldStatesScreen>
                               ));
                         },
                         child: Container(
-                            height: 50,
+                            height: utilities.butContHeight,
                             decoration: BoxDecoration(
-                                color: const Color(0xff1aa260),
-                                borderRadius: BorderRadius.circular(10)),
-                            child: const Center(
+                                color: utilities.buttonColor,
+                                borderRadius: utilities.buttonRad),
+                            child: Center(
                               child: Text(
-                                "Track Countries",
-                                style: TextStyle(
+                                utilities.buttonText,
+                                // ?  replace  this style with theme
+                                style: const TextStyle(
                                     color: Colors.white,
                                     fontSize: 15,
                                     fontWeight: FontWeight.bold),
@@ -144,6 +150,30 @@ class _WorldStatesScreenState extends State<WorldStatesScreen>
   }
 }
 
+// * Spinkit Widget for Loading Scene
+class SpinkitWidget extends StatelessWidget {
+  const SpinkitWidget({
+    super.key,
+    required AnimationController controller,
+    required this.colorSpin,
+    required this.spinSize,
+  }) : _controller = controller;
+
+  final AnimationController _controller;
+  final Color colorSpin;
+  final double spinSize;
+
+  @override
+  Widget build(BuildContext context) {
+    return SpinKitFadingCircle(
+      color: colorSpin,
+      size: spinSize,
+      controller: _controller,
+    );
+  }
+}
+
+// * ReusableRow to show data
 class ReusableRow extends StatelessWidget {
   const ReusableRow({super.key, required this.title, required this.value});
 
@@ -168,4 +198,23 @@ class ReusableRow extends StatelessWidget {
       ),
     );
   }
+}
+
+// * Basic Utilities
+class _Utilities {
+  final String serviceCase = 'Cases';
+  final String serviceActive = 'Active';
+  final String serviceTodRec = 'Today Recovered';
+  final String serviceTotRec = 'Total Recovered';
+  final String serviceTodDeath = "Today Death";
+  final String serviceTotDeath = " Total Death";
+  final String serviceCrit = 'Critical';
+  final String pieTot = "Total";
+  final String pieRec = "Recovered";
+  final String pieDeath = "Death";
+  final String serviceCont = 'Continant';
+  final String buttonText = "Track Countries";
+  final Color buttonColor = const Color(0xff1aa260);
+  final BorderRadius buttonRad = BorderRadius.circular(10);
+  final double butContHeight = 50;
 }

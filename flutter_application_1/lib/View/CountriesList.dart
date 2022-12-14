@@ -26,6 +26,7 @@ class _CountriesListScreenState extends State<CountriesListScreen>
           children: [
             Padding(
               padding: utilities.allPad,
+              // * TextformField added for searchBar
               child: TextFormField(
                 onChanged: (value) => setState(() {}),
                 controller: searchController,
@@ -38,7 +39,7 @@ class _CountriesListScreenState extends State<CountriesListScreen>
                 child: FutureBuilder(
               future: stateServices.countriesListApi(),
               builder: (context, AsyncSnapshot<List<dynamic>> snapshot) {
-                // if data is empty get shimmer
+                //*  if data is empty get shimmer
                 if (!snapshot.hasData) {
                   return ListView.builder(
                     itemCount: 10,
@@ -52,7 +53,7 @@ class _CountriesListScreenState extends State<CountriesListScreen>
                     },
                   );
                 }
-                // if data is not empty get service requests
+                // * if data is not empty get service requests
                 else {
                   return ListView.builder(
                     itemCount: snapshot.data!.length,
@@ -63,6 +64,7 @@ class _CountriesListScreenState extends State<CountriesListScreen>
                         return Column(
                           children: [
                             InkWell(
+                                // * if searchBar text is empty get ListTile(country names and flag )
                                 onTap: () {
                                   var materialPageRoute = MaterialPageRoute(
                                       builder: (context) =>
@@ -101,7 +103,7 @@ class _CountriesListScreenState extends State<CountriesListScreen>
     );
   }
 
-  // textFormInput decoration
+  // * textFormInput Inputdecoration
   InputDecoration textFormDec(
       {required final String? hintText,
       required final EdgeInsets symetricPad}) {
@@ -111,7 +113,7 @@ class _CountriesListScreenState extends State<CountriesListScreen>
         border: OutlineInputBorder(borderRadius: BorderRadius.circular(50)));
   }
 
-  // get base ListTile for each Country
+  // * get base ListTile for each Country
   ListTile baseListtile(AsyncSnapshot<List<dynamic>> snapshot, int index) {
     return ListTile(
       title: Text(snapshot.data![index]["country"]),
@@ -124,7 +126,7 @@ class _CountriesListScreenState extends State<CountriesListScreen>
     );
   }
 
-  // Material PageRouter
+  // * Material PageRouter
   DetailsScreen detaRoutService(
       AsyncSnapshot<List<dynamic>> snapshot, int index) {
     return DetailsScreen(
@@ -142,7 +144,7 @@ class _CountriesListScreenState extends State<CountriesListScreen>
   }
 }
 
-// Shimmer
+// * Shimmer
 class ShimmerWidget extends StatelessWidget {
   const ShimmerWidget({
     super.key,
@@ -186,6 +188,7 @@ class ShimmerWidget extends StatelessWidget {
   }
 }
 
+// * used for this view
 class _Utilities {
   final String hintText = "Search a Country";
   final EdgeInsets symetricPad = const EdgeInsets.symmetric(horizontal: 20);

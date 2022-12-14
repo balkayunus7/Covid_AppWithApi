@@ -31,14 +31,18 @@ class DetailsScreen extends StatefulWidget {
   State<DetailsScreen> createState() => _DetailsScreenState();
 }
 
-class _DetailsScreenState extends State<DetailsScreen> {
+class _DetailsScreenState extends State<DetailsScreen>
+    with TickerProviderStateMixin {
   @override
   Widget build(BuildContext context) {
+    _Utilities utilities = _Utilities();
     return Scaffold(
         appBar: AppBar(
+          // * added Appbar Title and Texttheme
           title: Text(
             widget.name,
-            style: const TextStyle(color: Colors.white, fontSize: 30),
+            style: Theme.of(context).textTheme.headlineSmall?.copyWith(
+                color: utilities.textColor, fontSize: utilities.textSize),
           ),
           centerTitle: true,
         ),
@@ -53,33 +57,37 @@ class _DetailsScreenState extends State<DetailsScreen> {
                   padding: EdgeInsets.only(
                       top: MediaQuery.of(context).size.height * .100),
                   child: Card(
+                    // * Card created and service datas added this card
                     child: Column(
                       children: [
                         ReusableRow(
-                            title: 'Cases',
+                            title: utilities.serviceCase,
                             value: widget.totalCases.toString()),
                         ReusableRow(
-                            title: 'Active', value: widget.active.toString()),
+                            title: utilities.serviceActive,
+                            value: widget.active.toString()),
                         ReusableRow(
-                            title: 'TodayRecovered',
+                            title: utilities.serviceTodRec,
                             value: widget.todayRecovered.toString()),
                         ReusableRow(
-                            title: 'TotalRecovered',
+                            title: utilities.serviceTotRec,
                             value: widget.totalRecovered.toString()),
                         ReusableRow(
-                            title: 'TotalDeaths',
+                            title: utilities.serviceDeath,
                             value: widget.totalDeaths.toString()),
                         ReusableRow(
-                            title: 'Cricital',
+                            title: utilities.serviceCrit,
                             value: widget.critical.toString()),
                         ReusableRow(
-                            title: 'Contitent', value: widget.contitent),
+                            title: utilities.serviceCont,
+                            value: widget.contitent),
                       ],
                     ),
                   ),
                 ),
+                // * Every countrys flag image added in CircleAvatar
                 CircleAvatar(
-                  radius: 70,
+                  radius: utilities.avatarRad,
                   backgroundImage: NetworkImage(
                     widget.image,
                   ),
@@ -89,4 +97,18 @@ class _DetailsScreenState extends State<DetailsScreen> {
           ],
         ));
   }
+}
+
+// * Basic Utilities
+class _Utilities {
+  final double avatarRad = 70;
+  final Color textColor = Colors.white;
+  final double textSize = 30;
+  final String serviceCase = 'Cases';
+  final String serviceActive = 'Active';
+  final String serviceTodRec = 'Today Recovered';
+  final String serviceTotRec = 'Total Recovered';
+  final String serviceDeath = "Death";
+  final String serviceCrit = 'Critical';
+  final String serviceCont = 'Continant';
 }

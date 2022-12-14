@@ -19,6 +19,7 @@ class _SplashScreenState extends State<SplashScreen>
   @override
   void initState() {
     super.initState();
+    // * Timer for PageRoute
     Timer(
       const Duration(seconds: 3),
       () => Navigator.push(
@@ -37,6 +38,7 @@ class _SplashScreenState extends State<SplashScreen>
         child: Column(
           children: [
             sizedBox(context),
+            // * Sizedbox for Lottie files
             SizedBox(
               height: utilities.contDimension,
               width: utilities.contDimension,
@@ -46,6 +48,7 @@ class _SplashScreenState extends State<SplashScreen>
             ),
             sizedBox(context),
             Align(
+              // ?  replace  this style with theme
               alignment: Alignment.center,
               child: Text(
                 utilities.titleText,
@@ -59,6 +62,7 @@ class _SplashScreenState extends State<SplashScreen>
     );
   }
 
+// * SizedBox Method for clean code
   SizedBox sizedBox(BuildContext context) {
     return SizedBox(
       height: MediaQuery.of(context).size.height * .08,
@@ -66,6 +70,7 @@ class _SplashScreenState extends State<SplashScreen>
   }
 }
 
+// * Basic Utilities
 class _Utilities {
   final String titleText = "Covid-19\nTracker App";
   final String lottieUrl = "images/26140-covid19.json";
