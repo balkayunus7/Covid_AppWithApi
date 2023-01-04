@@ -77,6 +77,7 @@ class _CountriesListScreenState extends State<CountriesListScreen>
                       } else if (name
                           .toLowerCase()
                           .contains(searchController.text.toLowerCase())) {
+                        // * if searchBar is used show wanted csountry
                         return Column(
                           children: [
                             InkWell(

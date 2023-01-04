@@ -26,6 +26,7 @@ class _WorldStatesScreenState extends State<WorldStatesScreen>
     _controller.dispose();
   }
 
+  // ? Fix it this shimmer colors
   final colorList = <Color>[
     const Color(0xff4285F4),
     const Color(0xff1aa260),
@@ -48,7 +49,7 @@ class _WorldStatesScreenState extends State<WorldStatesScreen>
               future: stateServices.fetchWorldStateRecords(),
               builder: (context, AsyncSnapshot<WorldStatesModel> snapshot) {
                 if (!snapshot.hasData) {
-                  // if data is empty show loading circle or spinkit
+                  // * if data is empty show loading circle or spinkit
                   return Expanded(
                       flex: 1,
                       child: SpinkitWidget(
