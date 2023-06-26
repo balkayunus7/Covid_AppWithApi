@@ -1,26 +1,3 @@
-/// updated : 1638272839619
-/// cases : 262565677
-/// todayCases : 161921
-/// deaths : 5228276
-/// todayDeaths : 3575
-/// recovered : 237138321
-/// todayRecovered : 209685
-/// active : 20199080
-/// critical : 83816
-/// casesPerOneMillion : 33685
-/// deathsPerOneMillion : 670.7
-/// tests : 4296552311
-/// testsPerOneMillion : 546236.69
-/// population : 7865733700
-/// oneCasePerPeople : 0
-/// oneDeathPerPeople : 0
-/// oneTestPerPeople : 0
-/// activePerOneMillion : 2567.98
-/// recoveredPerOneMillion : 30148.28
-/// criticalPerOneMillion : 10.66
-/// affectedCountries : 224
-// ignore_for_file: file_names
-
 class WorldStatesModel {
   WorldStatesModel({
     int? updated,

@@ -22,7 +22,6 @@ class _WorldStatesScreenState extends State<WorldStatesScreen>
   void dispose() {
     // ignore: todo
     // TODO: implement dispose
-    super.dispose();
     _controller.dispose();
   }
 
@@ -40,7 +39,7 @@ class _WorldStatesScreenState extends State<WorldStatesScreen>
       appBar: AppBar(),
       body: SafeArea(
         child: Padding(
-          padding: const EdgeInsets.all(15.0),
+          padding: const EdgeInsets.all(12.0),
           child: Column(children: [
             SizedBox(
               height: MediaQuery.of(context).size.height * .01,
@@ -81,7 +80,7 @@ class _WorldStatesScreenState extends State<WorldStatesScreen>
                       ),
                       Padding(
                         padding: EdgeInsets.symmetric(
-                            vertical: MediaQuery.of(context).size.height * .06),
+                            vertical: MediaQuery.of(context).size.height * .03),
                         child: Card(
                           // * Card for ReusableRows
                           child: Column(
@@ -183,7 +182,7 @@ class ReusableRow extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.only(left: 10, right: 10, top: 10, bottom: 5),
+      padding: const EdgeInsets.only(left: 10, right: 10, top: 5, bottom: 5),
       child: Column(
         children: [
           Row(
